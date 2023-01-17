@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
     # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql', 
+    #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'DB_NAME',
     #     'USER': 'admin',
     #     'PASSWORD': 'Grandmaster@123',
@@ -153,13 +153,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'api.User'
 
 REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': [
-            'rest_framework.authentication.TokenAuthentication',
-        ],
-        'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.IsAuthenticated',
-        ]
-    }
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 # Jwt Authentication
 # https://github.com/jpadilla/django-rest-framework-jwt/blob/master/rest_framework_jwt/settings.py
