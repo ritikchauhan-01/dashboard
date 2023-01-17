@@ -2,30 +2,18 @@ from rest_framework import serializers
 from .models import User
 
 class RegisterationSerializer(serializers.ModelSerializer):
-
+    password = serializers.CharField(write_only=True, required=True,)
     class Meta:
         model = User
-        fields = ['username','password','first_name', 'last_name','department', 'salary', 'phone_number',]
-        extra_kwargs = {"password": {"write_only": True}}
-
+        fields = ['username','password','first_name', 'last_name','employee_type', 'salary']
+        
         def create(self, validated_data):
-            user = User.objects.create(
-                username = validated_data['username'],
-                first_name = validated_data['first_name'],
-                last_name = validated_data['last_name'],
-                department = validated_data['department'],
-                salary = validated_data['salary'],
-                phone_number = validated_data['phone_number'],
-            )
-            user.set_password(validated_data['password'])
-            user.save()
-
-            return user
+            return User.objects.create_user(**validated_data)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id","username","first_name","last_name","department","salary",
+        fields = ["id","username","first_name","last_name","employee_type","salary",
         "last_login","date_joined"]
 
 
