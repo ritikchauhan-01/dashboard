@@ -3,11 +3,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
-from django.contrib.auth.hashers import check_password
+# from django.contrib.auth.hashers import check_password
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
-from .serializers import  RegisterationSerializer, UserSerializer
+from .serializers import RegisterationSerializer, UserSerializer
 from .models import User
 
 
@@ -27,38 +27,37 @@ def RegisterationView(request):
 @permission_classes([AllowAny])
 def LoginView(request):
 
-        data = {}
-        details = request.body
-        reqBody = json.loads(details)
-        username = reqBody['username']
-        # password = reqBody['password']
-        
-        try:
-            Account = User.objects.get(username=username)
-        except BaseException as e:
-            raise ValidationError({"400": f'{str(e)}'})
+    data = {}
+    details = request.body
+    reqBody = json.loads(details)
+    username = reqBody['username']
+    # password = reqBody['password']
 
-        token = Token.objects.get_or_create(user=Account)[0].key
+    try:
+        Account = User.objects.get(username=username)
+    except BaseException as e:
+        raise ValidationError({"400": f'{str(e)}'})
 
-        # if not check_password(password, Account.password):
-        #     raise ValidationError({"message": "Incorrect Login credentials"})
+    token = Token.objects.get_or_create(user=Account)[0].key
 
-        if Account:
-            if Account.is_active:
-                print(request.user)
-                login(request, Account)
-                data["message"] = "user logged in"
-                data["uesrname"] = Account.username
+    # if not check_password(password, Account.password):
+    #     raise ValidationError({"message": "Incorrect Login credentials"})
 
-                Res = {"data": data, "token": token}
+    if Account:
+        if Account.is_active:
+            login(request, Account)
+            data["message"] = "user logged in"
+            data["uesrname"] = Account.username
 
-                return Response(Res)
+            Res = {"data": data, "token": token}
 
-            else:
-                raise ValidationError({"400": f'Account not active'})
+            return Response(Res)
 
         else:
-            raise ValidationError({"400": f'Account doesnt exist'})
+            raise ValidationError({"400": f'{Account} not active'})
+
+    else:
+        raise ValidationError({"400": f'{Account} doesnt exist'})
 
 
 # Logout User API
@@ -78,4 +77,3 @@ def UserView(request):
     serializer = UserSerializer(instance=request.user)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
-
