@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+{% extends 'admin/base.html' %}
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
+    
+
+
 <head>
-  <title>Users</title>
+  <title>Employees-Details</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -10,42 +14,48 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
-<body>
 
+<div class="container">
+
+    {% block content %}
     <div class="container">
-    <h2>Employee Details Table</h2>
-    <form  method="POST" action="" >
-        {% csrf_token %}
-        <div >
-            {{ form.employee_type }} 
-        </div>
-        <input type="submit"  value="Submit"/>
-    </form>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Employee-Id</th>
-            <th>Email</th>
-            <th>First Name - Last Name</th>
-            <th>Department</th>
-            <th>Salary</th>
-            <th>Last_login</th>
-            <th>years in company</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for employee in employees %}
+        <h2>Employee Details Table</h2>
+        
+        <form  method="POST" action="" >
+            {% csrf_token %}
+            <div >
+                {{ form.employee_type }} 
+            </div>
+            <input type="submit"  value="Submit"/>
+        </form>
+
+        <table class="table">
+            <thead>
             <tr>
-            <td> {{ employee.id }}</td>
-            <td> {{ employee.username }}</td>
-            <td> {{ employee.first_name  }} {{employee.last_name}}</td>
-            <td> {{ employee.employee_type }}</td>
-            <td> {{ employee.salary }}</td>
-            <td> {{ employee.last_login }}</td>
-            <td> {{ employee.year_of_experience }}</td>
-            </tr> 
-            {% endfor %}
-        </tbody>
-    </table>
+                <th>Employee-Id</th>
+                <th>Email</th>
+                <th>First Name - Last Name</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Last_login</th>
+                <th>years in company</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                <td> {{ employee.id }}</td>
+                <td> {{ employee.username }}</td>
+                <td> {{ employee.first_name  }} {{employee.last_name}}</td>
+                <td> {{ employee.employee_type }}</td>
+                <td> {{ employee.salary }}</td>
+                <td> {{ employee.last_login }}</td>
+                <td> {{ employee.year_of_experience }}</td>
+                </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    {% endblock %}
+</div>
 </html>
