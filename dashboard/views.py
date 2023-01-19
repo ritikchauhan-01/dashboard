@@ -11,7 +11,6 @@ class DashBoardView(generic.View):
 
     # This function will get the data of all the users and send 'api/dashboard' url
     def get(self, request):
-
         users = User.objects.all()
         if User.is_superuser:
             items = self.get_context_data(users)
@@ -31,11 +30,14 @@ class DashBoardView(generic.View):
         user = request.user
         if user.is_authenticated:
             form = EmployeTypeChoiceForm(request.POST)
-            print(form)
             if form.is_valid():
                 employee_type = form.cleaned_data["employee_type"]
-                users = User.objects.filter(employee_type=employee_type)
-                items = self.get_context_data(users)
+                users = User.objects.all()
+                if employee_type == "-":
+                    items = self.get_context_data(users)
+                else:
+                    filter_users = users.filter(employee_type=employee_type)
+                    items = self.get_context_data(filter_users)
             return TemplateResponse(
                 request,
                 "dashboard/dashboard.html",
@@ -44,13 +46,12 @@ class DashBoardView(generic.View):
                     "form": form
                 },
             )
-        return redirect("/admin/")
+        return redirect("/api/dashboard/")
 
     # This funtion will get the users details of all the Users from the User model
     # and store it in list and return.
     @staticmethod
     def get_context_data(users):
-
         employee_details = []
         for user in users:
             employee_details.append({
@@ -70,4 +71,4 @@ class DashBoardView(generic.View):
                                             user.date_joined.month)),
                                     }
                                     )
-            return employee_details
+        return employee_details
